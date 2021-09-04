@@ -1,4 +1,6 @@
 # vott-replace-paths
+[![unittest](https://github.com/Niccari/vott-replace-paths/actions/workflows/unittests.yaml/badge.svg)](https://github.com/Niccari/vott-replace-paths/actions/workflows/unittests.yaml)
+
 Converts your VoTT projects portable to an other local file path or an Azure Blob Storage container.
 
 ## Installation
