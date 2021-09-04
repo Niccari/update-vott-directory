@@ -4,7 +4,8 @@ import os
 
 from app.arguments import Arguments
 from app.model.project_info import ProjectInfo
-from app.parser import Parser
+from app.asset_parser import AssetParser
+from app.connection_parser import ConnectionParser
 
 
 def find_vott_path(directory: str):
@@ -31,11 +32,12 @@ if __name__ == '__main__':
     with open(vott_path, 'r') as f:
         vott_dict = json.load(f)
 
-    parser = Parser(project_info, target_connection_path)
-    parser.parse(vott_dict)
-    parser.rename(vott_path)
-    parser.update_contents()
+    asset_parser = AssetParser(project_info, target_connection_path)
+    asset_parser.parse(vott_dict)
+    asset_parser.rename(vott_path)
+    asset_parser.update_contents()
 
-    parser.update_connections()
+    connection_parser = ConnectionParser(project_info, target_connection_path)
+    connection_parser.update_connections()
 
-    print(f'Completed! The output is in {parser.output_directory}.')
+    print(f'Completed! The output is in {asset_parser.output_directory}.')

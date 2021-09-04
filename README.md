@@ -19,15 +19,15 @@ In below examples, it will be "path/to/vott_file_directory/output/".
 ### To local
 ```
 python main.py \
-    -t security_token \
+    -t security_key_security_token \
     -s path/to/vott_file_directory \
-    -n path/to/new_local_directory
+    -n path/to/source_connection_path
 ```
 
 ### To cloud(Azure Blob Container)
 ```
 python main.py \
-    -t security_token \
+    -t security_key_security_token \
     -s path/to/vott_file_directory \
     -a your_azure_storage_account_name
     -c your_azure_container_name
