@@ -1,38 +1,60 @@
 # vott-replace-paths
-Updates VoTT directory and asset ids in assets.
-
-You will be able to move files(\*.vott, \*-asset.json, movies and pictures) to a specified directory or your azure blob container.
-
-## Notes
-Source/Target connection updates are not supported - Please fix them manually.
+Converts your VoTT projects portable to an other local file path or an Azure Blob Storage container.
 
 ## Installation
-It runs in a Python 3.x environment.
+### Requirements
+- Python 3.x
+- pycryptodome
 
-No additional libraries need to be installed.
+### pipenv
+```bash
+$ pipenv sync
+$ pipenv shell    # To enter your virtual environment
+```
+
+### pip
+```bash
+$ python -m pip install -r requirements.txt
+```
 
 ## Usage
-The converted file will be output to "output/" under the directory where the vott file is located.
-
-In below examples, it will be "path/to/vott_file_directory/output/".
+Converted files will be output to "output/" under the directory where the vott file is located.
 
 ### To local
-```
-python main.py \
-    -t security_key_security_token \
-    -s path/to/vott_file_directory \
-    -n path/to/source_connection_path
+Please specify below parameters.
+
+- -k: The security token to load/store your vott project.
+- -s: The new video path (= Source connection)
+- -t: The vott/assets file path (= Target connection)
+
+```bash
+$ python main.py \
+    -k security_key_security_token \
+    -s path/to/video_source_path \
+    -t path/to/vott_file_directory
 ```
 
 ### To cloud(Azure Blob Container)
-```
-python main.py \
-    -t security_key_security_token \
-    -s path/to/vott_file_directory \
+Please specify below parameters.
+
+- -k: Security token to load/store your vott project.
+- -t: VoTT/Assets file path
+- -a: Azure blob storage account name
+- -c: Azure blob storage container name
+- -sas: SAS string for your Azure blob storage
+
+```bash
+$ python main.py \
+    -k security_key_security_token \
+    -t path/to/vott_file_directory \
     -a your_azure_storage_account_name
     -c your_azure_container_name
     -sas sas_for_reading_your_container
 ```
 
+## Notice
+If you find some bug, feel free to create an Issue or PR!
+
 ## Acknowledgements
 This code is based on the [update-vott-assets](https://github.com/cnrmck/update-vott-assets), Thanks!
+
