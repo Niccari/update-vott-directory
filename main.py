@@ -16,12 +16,12 @@ def find_vott_path(directory: str):
     return candidates[0]
 
 
-# Update of azure connections is not supported. Please change them manually.
 if __name__ == '__main__':
     arguments = Arguments()
     source_directory = arguments.args.source_directory
 
     project_info = ProjectInfo(
+        key=arguments.args.key,
         new_local_directory=arguments.args.new_local_directory,
         azure_account_name=arguments.args.account_name,
         azure_container_name=arguments.args.container_name,
@@ -35,5 +35,7 @@ if __name__ == '__main__':
     parser.parse(vott_dict)
     parser.rename(vott_path)
     parser.update_contents()
+
+    parser.update_connections()
 
     print(f'Completed! The output is in {parser.output_directory}.')

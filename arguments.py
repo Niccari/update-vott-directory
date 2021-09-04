@@ -5,6 +5,7 @@ class Arguments:
     def __init__(self):
         parser = argparse.ArgumentParser(
             description='Updates VoTT directory.')
+        parser.add_argument('-t', '--token', required=True)
         parser.add_argument('-s', '--source_directory', required=True)
         parser.add_argument('-n', '--new_local_directory')
         parser.add_argument('-a', '--account_name')

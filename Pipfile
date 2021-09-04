@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pycryptodome = "*"
+
+[scripts]
+test = "python -m unittest discover tests -v"
+
+[requires]
+python_version = "3.9"
+
+[dev_packages]
+pytest = "*"

@@ -1,10 +1,14 @@
+import base64
 import glob
 import json
 import os
 import shutil
 
+from libs.cipher import Cipher
 from model.project_info import ProjectInfo
 from model.target import Target
+
+from typing import Optional
 
 
 class Parser:
@@ -17,6 +21,7 @@ class Parser:
 
     def parse(self, vott_dict: dict):
         print('Parsing a vott file...')
+
         for old_asset_id, asset in vott_dict['assets'].items():
             self.targets[old_asset_id] = (
                 Target(
@@ -55,6 +60,51 @@ class Parser:
 
         shutil.copy2(
             vott_path, os.path.join(output_path, os.path.basename(vott_path)))
+
+    @staticmethod
+    def decrypt_connection(token: str, encrypted: str) -> dict:
+        decoded_json = json.loads(base64.b64decode(encrypted))
+        ciphertext = bytes.fromhex(decoded_json["ciphertext"])
+        iv = bytes.fromhex(decoded_json["iv"])
+        key = base64.b64decode(token)
+        return json.loads(Cipher.aes_decrypt_to_plain(ciphertext, iv, key))
+
+    @staticmethod
+    def update_connection(token: str, encrypted: str,
+                          src_dir: str, dst_dir: str) -> str:
+        connection = Parser.decrypt_connection(token, encrypted)
+        folder_path: Optional[str] = connection.get("folderPath")
+        connection["folderPath"] = folder_path.replace(src_dir, dst_dir)
+
+        iv = os.urandom(16) + os.urandom(8)
+        ciphertext_hex: str = Cipher.aes_encrypt_to_hex(
+            json.dumps(connection), iv)
+        return base64.b64encode({
+            "ciphertext": ciphertext_hex,
+            "iv": iv.hex(),
+        }.decode())
+
+    def update_connections(self):
+        print('Update connections...')
+
+        vott_path_regex = os.path.join(self.output_directory, '*.vott')
+
+        for file_path in glob.glob(vott_path_regex):
+            with open(file_path, 'w+') as f:
+                info = json.load(f)
+
+            info['sourceConnection']['providerOptions']['encrypted'] = \
+                Parser.update_connection(
+                    self.project_info.token,
+                    info['sourceConnection']['providerOptions']['encrypted'],
+                    self.source_directory,
+                    self.project_info.new_dir_name)
+            info['tagretConnection']['providerOptions']['encrypted'] = \
+                Parser.update_connection(
+                    self.project_info.token,
+                    info['tagretConnection']['providerOptions']['encrypted'],
+                    self.source_directory,
+                    self.project_info.new_dir_name)
 
     def update_contents(self):
         def update_item(asset: dict):

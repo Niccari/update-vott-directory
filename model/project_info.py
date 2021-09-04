@@ -4,11 +4,13 @@ from typing import Optional
 class ProjectInfo:
     def __init__(
             self,
+            token: str,
             new_local_directory: Optional[str] = None,
             azure_account_name: Optional[str] = None,
             azure_container_name: Optional[str] = None,
             azure_sas: Optional[str] = None):
 
+        self.token = token
         self.new_local_directory = new_local_directory
 
         self.azure_account_name = azure_account_name
