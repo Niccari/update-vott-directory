@@ -8,13 +8,6 @@ from app.model.project_info import ProjectInfo
 
 
 class ConnectionParser:
-    def __init__(self, project_info: ProjectInfo):
-        self.project_info = project_info
-        self.targets = {}
-        self.asset_id_mapper = {}
-        self.output_directory = \
-            os.path.join(project_info.target_connection_path, 'output')
-
     @staticmethod
     def decrypt_connection(key_security_token: str, encrypted: str) -> dict:
         decoded_json = json.loads(base64.b64decode(encrypted))
@@ -61,44 +54,47 @@ class ConnectionParser:
         return ConnectionParser.encrypt_connection(
             key_security_token, connection_new)
 
-    def update_connections(self):
+    @staticmethod
+    def update_connections(project_info: ProjectInfo):
         print('Update connections...')
 
-        vott_path_regex = os.path.join(self.output_directory, '*.vott')
+        output_directory = \
+            os.path.join(project_info.target_connection_path, 'output')
+        vott_path_regex = os.path.join(output_directory, '*.vott')
 
         for file_path in glob.glob(vott_path_regex):
             with open(file_path, 'r') as f:
                 info = json.loads(f.read())
 
-            if self.project_info.is_azure:
+            if project_info.is_azure:
                 info['sourceConnection']['providerOptions']['encrypted'] = \
                     ConnectionParser._update_connection_azure(
-                        self.project_info.key_security_token,
+                        project_info.key_security_token,
                         info['sourceConnection']['providerOptions']['encrypted'],  # noqa: E501
-                        self.project_info.azure_account_name,
-                        self.project_info.azure_container_name,
-                        self.project_info.azure_sas)
+                        project_info.azure_account_name,
+                        project_info.azure_container_name,
+                        project_info.azure_sas)
                 info['targetConnection']['providerOptions']['encrypted'] = \
                     ConnectionParser._update_connection_azure(
-                        self.project_info.key_security_token,
+                        project_info.key_security_token,
                         info['targetConnection']['providerOptions']['encrypted'],  # noqa: E501
-                        self.project_info.azure_account_name,
-                        self.project_info.azure_container_name,
-                        self.project_info.azure_sas)
+                        project_info.azure_account_name,
+                        project_info.azure_container_name,
+                        project_info.azure_sas)
             else:
                 info['sourceConnection']['providerOptions']['encrypted'] = \
                     ConnectionParser._update_connection_local(
-                        self.project_info.key_security_token,
+                        project_info.key_security_token,
                         info['sourceConnection']['providerOptions']['encrypted'],  # noqa: E501
-                        self.project_info.source_connection_path)
+                        project_info.source_connection_path)
                 info['targetConnection']['providerOptions']['encrypted'] = \
                     ConnectionParser._update_connection_local(
-                        self.project_info.key_security_token,
+                        project_info.key_security_token,
                         info['targetConnection']['providerOptions']['encrypted'],  # noqa: E501
-                        self.project_info.target_connection_path)
+                        project_info.target_connection_path)
 
             providerType = "azureBlobStorage" \
-                if self.project_info.is_azure else "localFileSystemProxy"
+                if project_info.is_azure else "localFileSystemProxy"
             info['sourceConnection']['providerType'] = providerType
             info['targetConnection']['providerType'] = providerType
             with open(file_path, 'w') as f:

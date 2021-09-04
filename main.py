@@ -30,9 +30,7 @@ if __name__ == '__main__':
     vott_path = find_vott_path(project_info.target_connection_path)
 
     AssetParser.update_assets(vott_path, project_info)
-
-    connection_parser = ConnectionParser(project_info)
-    connection_parser.update_connections()
+    ConnectionParser.update_connections(project_info)
 
     print("Completed! The output is in"
           + f"{project_info.target_connection_path}/output.")
