@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from libs.cipher import Cipher
+from app.libs.cipher import Cipher
 
 
 class CipherTests(unittest.TestCase):

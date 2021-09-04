@@ -2,9 +2,9 @@ import glob
 import json
 import os
 
-from arguments import Arguments
-from model.project_info import ProjectInfo
-from parser import Parser
+from app.arguments import Arguments
+from app.model.project_info import ProjectInfo
+from app.parser import Parser
 
 
 def find_vott_path(directory: str):
