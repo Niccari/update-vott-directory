@@ -32,5 +32,5 @@ if __name__ == '__main__':
     AssetParser.update_assets(vott_path, project_info)
     ConnectionParser.update_connections(project_info)
 
-    print("Completed! The output is in"
+    print("Completed! The output is in "
           + f"{project_info.target_connection_path}/output.")
