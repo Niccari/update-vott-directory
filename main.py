@@ -2,9 +2,9 @@ import glob
 import os
 
 from app.arguments import Arguments
-from app.model.project_info import ProjectInfo
 from app.asset_parser import AssetParser
 from app.connection_parser import ConnectionParser
+from app.model.project_info import ProjectInfo
 
 
 def find_vott_path(directory: str):
