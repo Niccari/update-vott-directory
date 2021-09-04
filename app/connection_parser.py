@@ -17,7 +17,7 @@ class ConnectionParser:
         return json.loads(Cipher.aes_decrypt_to_plain(ciphertext, iv, key))
 
     @staticmethod
-    def encrypt_connection(key_security_token: str, decrypted: dict) -> str:
+    def _encrypt_connection(key_security_token: str, decrypted: dict) -> str:
         iv = os.urandom(16) + os.urandom(8)
         key = base64.b64decode(key_security_token)
         ciphertext_hex: str = Cipher.aes_encrypt_to_hex(
@@ -35,7 +35,7 @@ class ConnectionParser:
         connection_new = {"folderPath": dst_dir}
         print("change connection: " + str(connection)
               + " => " + str(connection_new))
-        return ConnectionParser.encrypt_connection(
+        return ConnectionParser._encrypt_connection(
             key_security_token, connection_new)
 
     @staticmethod
@@ -51,7 +51,7 @@ class ConnectionParser:
         }
         print("change connection: " + str(connection)
               + " => " + str(connection_new))
-        return ConnectionParser.encrypt_connection(
+        return ConnectionParser._encrypt_connection(
             key_security_token, connection_new)
 
     @staticmethod
