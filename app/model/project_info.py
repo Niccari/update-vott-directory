@@ -5,12 +5,14 @@ class ProjectInfo:
     def __init__(
             self,
             key_security_token: str,
+            target_connection_path: str,
             source_connection_path: Optional[str] = None,
             azure_account_name: Optional[str] = None,
             azure_container_name: Optional[str] = None,
             azure_sas: Optional[str] = None):
 
         self.key_security_token = key_security_token
+        self.target_connection_path = target_connection_path
         self.source_connection_path = source_connection_path
 
         self.azure_account_name = azure_account_name

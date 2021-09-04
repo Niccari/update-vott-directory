@@ -8,13 +8,12 @@ from app.model.project_info import ProjectInfo
 
 
 class ConnectionParser:
-    def __init__(self, project_info: ProjectInfo, target_connection_path: str):
+    def __init__(self, project_info: ProjectInfo):
         self.project_info = project_info
         self.targets = {}
         self.asset_id_mapper = {}
-        self.target_connection_path = target_connection_path
         self.output_directory = \
-            os.path.join(self.target_connection_path, 'output')
+            os.path.join(project_info.target_connection_path, 'output')
 
     @staticmethod
     def decrypt_connection(key_security_token: str, encrypted: str) -> dict:
@@ -96,7 +95,7 @@ class ConnectionParser:
                     ConnectionParser._update_connection_local(
                         self.project_info.key_security_token,
                         info['targetConnection']['providerOptions']['encrypted'],  # noqa: E501
-                        self.target_connection_path)
+                        self.project_info.target_connection_path)
 
             providerType = "azureBlobStorage" \
                 if self.project_info.is_azure else "localFileSystemProxy"
