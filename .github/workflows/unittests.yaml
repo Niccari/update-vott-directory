@@ -7,9 +7,6 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     container: python:3.9-slim
-    defaults:
-      run:
-        working-directory: workspace
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
