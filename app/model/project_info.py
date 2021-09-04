@@ -4,14 +4,14 @@ from typing import Optional
 class ProjectInfo:
     def __init__(
             self,
-            token: str,
-            new_local_directory: Optional[str] = None,
+            key_security_token: str,
+            source_connection_path: Optional[str] = None,
             azure_account_name: Optional[str] = None,
             azure_container_name: Optional[str] = None,
             azure_sas: Optional[str] = None):
 
-        self.token = token
-        self.new_local_directory = new_local_directory
+        self.key_security_token = key_security_token
+        self.source_connection_path = source_connection_path
 
         self.azure_account_name = azure_account_name
         self.azure_container_name = azure_container_name
@@ -31,7 +31,7 @@ class ProjectInfo:
             return f"https://{self.azure_account_name}.blob.core.windows.net/"\
                 + f"{self.azure_container_name}/"
         else:
-            return f"file:{self.new_local_directory}"
+            return f"file:{self.source_connection_path}"
 
     def __validate_params(self):
         if self.is_azure:
@@ -40,9 +40,9 @@ class ProjectInfo:
                     or not self.azure_sas:
                 raise ValueError(
                     'Please specify all params for your azure blob container.')
-            if self.new_local_directory:
+            if self.source_connection_path:
                 raise ValueError(
-                    'Plase specify either new_local_directory or azure parameters.')    # noqa: E501
-        elif not self.new_local_directory:
+                    'Plase specify either source_connection_path or azure parameters.')    # noqa: E501
+        elif not self.source_connection_path:
             raise ValueError(
                 'Please specify a local directory to edit your vott project.')

@@ -18,20 +18,20 @@ def find_vott_path(directory: str):
 
 if __name__ == '__main__':
     arguments = Arguments()
-    source_directory = arguments.args.source_directory
+    target_connection_path = arguments.args.target_connection_path
 
     project_info = ProjectInfo(
-        key=arguments.args.key,
-        new_local_directory=arguments.args.new_local_directory,
+        key_security_token=arguments.args.key_security_token,
+        source_connection_path=arguments.args.source_connection_path,
         azure_account_name=arguments.args.account_name,
         azure_container_name=arguments.args.container_name,
         azure_sas=arguments.args.sas,
     )
-    vott_path = find_vott_path(source_directory)
+    vott_path = find_vott_path(target_connection_path)
     with open(vott_path, 'r') as f:
         vott_dict = json.load(f)
 
-    parser = Parser(project_info, source_directory)
+    parser = Parser(project_info, target_connection_path)
     parser.parse(vott_dict)
     parser.rename(vott_path)
     parser.update_contents()
