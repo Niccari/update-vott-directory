@@ -6,9 +6,6 @@ import shutil
 from app.model.project_info import ProjectInfo
 from app.model.target import Target
 
-from typing import Optional
-from typing import Tuple
-
 
 class AssetParser:
     @staticmethod
@@ -35,7 +32,7 @@ class AssetParser:
     def _parse(
             vott_path: str,
             new_dir_name: str,
-            azure_sas: Optional[str]) -> Tuple[dict, dict]:
+            azure_sas: str | None) -> tuple[dict, dict]:
         print('Parsing a vott file...')
 
         with open(vott_path, 'r') as f:

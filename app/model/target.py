@@ -1,13 +1,11 @@
 import hashlib
 import os
 
-from typing import Optional
-
 
 class Target:
     def __init__(
             self,
-            asset: dict, new_dir_name: str, azure_sas: Optional[str]):
+            asset: dict, new_dir_name: str, azure_sas: str | None):
         self.asset_id = asset['id']
         self.type = asset['type']
         self.name = asset['name'].split('?')[0].split('#')[0]
@@ -29,7 +27,7 @@ class Target:
             hashlib.md5(self.new_path.encode('utf-8')).hexdigest()
 
     @classmethod
-    def __finalize_name(cls, name: str, azure_sas: Optional[str]) -> str:
+    def __finalize_name(cls, name: str, azure_sas: str | None) -> str:
         if azure_sas:
             return f'{name}{azure_sas}'
         else:
