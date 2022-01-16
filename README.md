@@ -5,7 +5,7 @@ Converts your VoTT projects portable to an other local file path or an Azure Blo
 
 ## Installation
 ### Requirements
-- Python 3.x
+- Python 3.10.x
 - pycryptodome
 
 ### pipenv
